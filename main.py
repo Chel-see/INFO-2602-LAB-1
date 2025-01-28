@@ -13,7 +13,17 @@ with open('data.json') as f:
 @app.route('/')
 def hello_world():
     return 'Hello, World!'  # return 'Hello World' in response
+  
+##@app.route('/students')
+##def get_students():
+  ##  return jsonify(data)# return student data in response
 
+@app.route('/students/<id>')
+def get_student(id):
+  for student in data: 
+    if student['id'] == id: # filter out the students without the specified id
+      return jsonify(student)
+        
 @app.route('/students')
 def get_students():
   result = []
@@ -24,13 +34,5 @@ def get_students():
         result.append(student) # add match student to the result
     return jsonify(result) # return filtered set if parameter is supplied
   return jsonify(data) # return entire dataset if no parameter supplied
-
-@app.route('/students/<id>')
-def get_student(id):
-  for student in data: 
-    if student['id'] == id: # filter out the students without the specified id
-      return jsonify(student)
-    else :
-      print("Not found")
-
+    
 app.run(host='0.0.0.0', port=8080, debug=True)
