@@ -34,5 +34,61 @@ def get_students():
         result.append(student) # add match student to the result
     return jsonify(result) # return filtered set if parameter is supplied
   return jsonify(data) # return entire dataset if no parameter supplied
+
+
+  
+@app.route('/stats')
+def get_stats():
+      stats = {  ##make dictionary for output and reference each loc, increase count 
+        
+          "Chicken": 0,
+          "Fish": 0,
+          "Vegetable": 0,
+          "Computer Science (Major)": 0,
+          "Computer Science (Special)": 0,
+          "Information Technology (Major)": 0,
+          "Information Technology (Special)": 0
+      }
+
+      for student in data:
+          if student['pref'] == 'Chicken':
+              stats["Chicken"] += 1
+          elif student['pref'] == 'Fish':
+              stats["Fish"] += 1
+          elif student['pref'] == 'Vegetable':
+              stats["Vegetable"] += 1
+
+          if student['programme'] == 'Computer Science (Major)':
+              stats["Computer Science (Major)"] += 1
+          elif student['programme'] == 'Computer Science (Special)':
+              stats["Computer Science (Special)"] += 1
+          elif student['programme'] == 'Information Technology (Major)':
+              stats["Information Technology (Major)"] += 1
+          elif student['programme'] == 'Information Technology (Special)':
+              stats["Information Technology (Special)"] += 1
+
+      return jsonify(stats)
+
+
+@app.route('/add/<int:a>/<int:b>')
+def add(a, b):
+      return jsonify({ "operation": "ADD", "a": a, "b": b, "result": a + b })
+
+@app.route('/subtract/<int:a>/<int:b>')
+def subtract(a, b):
+      return jsonify({ "operation": "SUBTRACT", "a": a, "b": b, "result": a - b })
+
+@app.route('/multiply/<int:a>/<int:b>')
+def multiply(a, b):
+      return jsonify({ "operation": "MULTIPLY", "a": a, "b": b, "result": a * b })
+
+@app.route('/divide/<int:a>/<int:b>')
+def divide(a, b):
+      if b == 0:
+          return jsonify({"error": "Division by zero is not allowed"})
+      return jsonify({ "operation": "DIVIDE", "a": a, "b": b, "result": a / b })
+      
+      
+  
     
 app.run(host='0.0.0.0', port=8080, debug=True)
